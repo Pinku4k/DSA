@@ -437,252 +437,452 @@ void display ()
                     }
 }
 7.
-#include<stdio.h>
-#include<conio.h>
-#include<stdlib.h>
-struct Node
-{
-			char usn[30];
-			char name[30];
-			char branch[5];
-			int sem;
-			char phno[10];
-			struct Node *link;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Structure to represent a student
+struct Student {
+    char USN[20];
+    char Name[50];
+    char Programme[20];
+    int Sem;
+    char PhNo[15];
+    struct Student *next;
 };
-struct Node * getnode()
-{
-			struct Node *p;
-			p=(struct Node *)malloc(sizeof(struct Node)); //Create  NODE
-			printf("\nEnter USN, Name, Branch, Sem, Ph.No\n");
-			p->link = NULL;
-			fflush(stdin);
-			scanf("%s%s%s%d%s", p->usn,p->name,p->branch,&p->sem,p->phno);
-			return p;
+
+// Global variable to hold the head of the linked list
+struct Student *head = NULL;
+
+// Function prototypes
+void frontInsertion();
+void displayAndCount();
+void endInsertion();
+void frontDeletion();
+void endDeletion();
+void menu();
+
+int main() {
+    int choice;
+    do {
+        menu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        switch(choice) {
+            case 1:
+                frontInsertion();
+                break;
+            case 2:
+                displayAndCount();
+                break;
+            case 3:
+                endInsertion();
+                break;
+            case 4:
+                frontDeletion();
+                break;
+            case 5:
+                endDeletion();
+                break;
+            case 6:
+                printf("Exiting program.\n");
+                exit(0);
+            default:
+                printf("Invalid choice! Please enter a valid option.\n");
+        }
+    } while(choice != 6);
+
+    return 0;
 }
 
-struct Node *InsertF(struct Node *first) // Insert @ Front
-{
-			struct Node *p;
-			p = getnode();
-			if(first==NULL)
-			first = p;
-			else
-			{
-	 			p->link =first;
-	  			first = p;
-			}
-      	return first;
+// Function to display menu
+void menu() {
+    printf("\nMenu:\n");
+    printf("1. Create a SLL of N Students Data by using front insertion\n");
+    printf("2. Display the status of SLL and count the number of nodes in it\n");
+    printf("3. Perform Insertion at End of SLL\n");
+    printf("4. Perform Deletion at Front of SLL (Demonstration of stack)\n");
+    printf("5. Perform Deletion at End of SLL\n");
+    printf("6. Exit\n");
 }
-struct Node *InsertR(struct Node *first)  // Insert @ End
-{
-    		struct Node *p;
-			if(first==NULL)
-			first = getnode();
-			else
-			{
-	  			for(p=first; p->link!=NULL; p=p->link);
-	  			p->link = getnode();
-			}
-      	return first;
+
+// Function to insert a student at the front of the linked list
+void frontInsertion() {
+    struct Student *newStudent = (struct Student*)malloc(sizeof(struct Student));
+    printf("Enter USN: ");
+    scanf("%s", newStudent->USN);
+    printf("Enter Name: ");
+    scanf("%s", newStudent->Name);
+    printf("Enter Programme: ");
+    scanf("%s", newStudent->Programme);
+    printf("Enter Semester: ");
+    scanf("%d", &newStudent->Sem);
+    printf("Enter Phone Number: ");
+    scanf("%s", newStudent->PhNo);
+    newStudent->next = head;
+    head = newStudent;
 }
-struct Node *DeleteF(struct Node *first)  // delete @ Front
-{     
-			struct Node *p;
-			if(first==NULL)
-			printf("\nLIST IS EMPTY");
-       	else
-			{
-				p=first;
-				first=first->link;
-				printf("\nDeleted Record is:\n");
-				printf("%s\t%s\t%s\t%d\t%s\n",p->usn,p->name,p->branch,p->sem,p->phno);
-				free(p);
-			}
-			return first;
+
+// Function to display the linked list and count the number of nodes
+void displayAndCount() {
+    struct Student *temp = head;
+    int count = 0;
+    printf("\nStudent Data:\n");
+    while(temp != NULL) {
+        printf("USN: %s, Name: %s, Programme: %s, Semester: %d, Phone Number: %s\n", temp->USN, temp->Name, temp->Programme, temp->Sem, temp->PhNo);
+        temp = temp->next;
+        count++;
+    }
+    printf("Total number of nodes: %d\n", count);
 }
-struct Node *DeleteR(struct Node *first)  // delete @ End
-{   
-			struct Node *p,*prev;
-			if(first==NULL)
-			printf("\nList is Empty\n");
-       	else
-       	{    
-				prev = NULL;     // prev follows p
-				for(p=first;p->link!=NULL;prev=p, p=p->link); //Navigate list till end
-				if(prev ==NULL)
-				first = NULL;
-				else
-				prev->link=NULL;
-				printf("\nDeleted Record is:\n");
-				printf("%s\t%s\t%s\t%d\t%s\n",p->usn,p->name,p->branch,p->sem,p->phno);
-				free(p);
-			}
-			return first;
+
+// Function to perform insertion at the end of the linked list
+void endInsertion() {
+    // Implement this function
 }
-void Display(struct Node *first)
-{
-			struct Node *p;
-			int cnt = 0;
-			if(first==NULL)
-			{
-				printf("\nList is Empty\n");
-				return;
-			}
-			printf("\nStatus of List:\n");
-			for(p=first;p!=NULL;p=p->link)
-			{
-				printf("%s\t%s\t%s\t%d\t%s\n",p->usn,p->name,p->branch,p->sem,p->phno);
-				cnt++;
-			}
-			printf("Total Number of Records: %d", cnt);
+
+// Function to perform deletion at the front of the linked list
+void frontDeletion() {
+    // Implement this function
 }
-void  main()
-{
-			int ch;
-			struct Node *first = NULL; //initialize list as empty
-			clrscr();
-			while(1)
-			{
-	printf("\n1:INSERT-Front\n2:INSERT-End\n3:DELETE-Front\n4:DELETE-    End\n5:DISPLAY\n6:EXIT\n");
-			printf("Enetr your choice\n");
-			scanf("%d", &ch);
-			switch(ch)
-			{
-				case 1: first=InsertF(first);
-				break;
-				case 2: first=InsertR(first);
-				break;
-				case 3: first=DeleteF(first);
-				break;
-				case 4: first=DeleteR(first);
-				break;
-				case 5: Display(first); break;
-				case 6: exit(0);
-			}
-		}
-	}
+
+// Function to perform deletion at the end of the linked list
+void endDeletion() {
+    // Implement this function
+}
 8.
-  #include<stdlib.h>
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-struct Node
-{
-struct Node *llink;
-int ssn;
-char name[20];
-char dept[10];
-char desig[10];
-unsigned sal;
-char pno[12];
-struct Node *rlink;
+// Employee structure
+struct Employee {
+    int SSN;
+    char Name[50];
+    char Dept[50];
+    char Designation[50];
+    float Sal;
+    long PhNo;
+    struct Employee* prev;
+    struct Employee* next;
 };
-struct Node *first=NULL;
-struct Node *last =NULL;
-struct Node * getnode()
-{
-	struct Node *p;
-	p=(struct Node *)malloc(sizeof(struct Node)); //Create  NODE
-	printf("\nEnter SSN, Name,Dept.,Desig.,Salry, Ph.No\n");
-	p->llink = p->rlink=NULL;
-	fflush(stdin);
-	scanf("%d%s%s%s%d%s", &p->ssn,p->name,p->dept,p->desig,&p->sal,p->pno);
-	return p;
+
+// Function prototypes
+void insertEnd(struct Employee** head, struct Employee** tail);
+void display(struct Employee* head);
+void countNodes(struct Employee* head);
+void insertFront(struct Employee** head, struct Employee** tail);
+void deleteEnd(struct Employee** head, struct Employee** tail);
+void deleteFront(struct Employee** head, struct Employee** tail);
+
+int main() {
+    struct Employee* head = NULL;
+    struct Employee* tail = NULL;
+    int choice;
+
+    do {
+        printf("\nMenu:\n");
+        printf("1. Create a DLL of N Employees Data\n");
+        printf("2. Display the status of DLL and count the number of nodes\n");
+        printf("3. Insert at the end of DLL\n");
+        printf("4. Insert at the front of DLL\n");
+        printf("5. Delete from the end of DLL\n");
+        printf("6. Delete from the front of DLL\n");
+        printf("7. Demonstrate Double Ended Queue\n");
+        printf("8. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                // Create DLL
+                printf("Creating DLL...\n");
+                insertEnd(&head, &tail);
+                break;
+            case 2:
+                // Display status and count nodes
+                printf("Displaying status of DLL...\n");
+                display(head);
+                countNodes(head);
+                break;
+            case 3:
+                // Insert at end
+                printf("Inserting at the end of DLL...\n");
+                insertEnd(&head, &tail);
+                break;
+            case 4:
+                // Insert at front
+                printf("Inserting at the front of DLL...\n");
+                insertFront(&head, &tail);
+                break;
+            case 5:
+                // Delete from end
+                printf("Deleting from the end of DLL...\n");
+                deleteEnd(&head, &tail);
+                break;
+            case 6:
+                // Delete from front
+                printf("Deleting from the front of DLL...\n");
+                deleteFront(&head, &tail);
+                break;
+            case 7:
+                // Demonstrate Double Ended Queue
+                printf("Demonstrating Double Ended Queue...\n");
+                // Implement your Double Ended Queue operations here
+                break;
+            case 8:
+                // Exit
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice! Please enter a valid option.\n");
+        }
+    } while(choice != 8);
+
+    return 0;
 }
-void InsertFront(void)
+
+void insertEnd(struct Employee** head, struct Employee** tail) {
+    // Implement insertion at end here
+}
+
+void display(struct Employee* head) {
+    // Implement display function here
+}
+
+void countNodes(struct Employee* head) {
+    // Implement counting of nodes here
+}
+
+void insertFront(struct Employee** head, struct Employee** tail) {
+    // Implement insertion at front here
+}
+
+void deleteEnd(struct Employee** head, struct Employee** tail) {
+    // Implement deletion from end here
+}
+
+void deleteFront(struct Employee** head, struct Employee** tail) {
+    // Implement deletion from front here
+}
+9.
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 10
+
+char queue[MAX_SIZE];
+int front = -1, rear = -1;
+
+void insertElement(char element) {
+    if ((front == 0 && rear == MAX_SIZE - 1) || (rear == (front - 1) % (MAX_SIZE - 1))) {
+        printf("Queue Overflow\n");
+        return;
+    } else if (front == -1) {
+        front = rear = 0;
+    } else if (rear == MAX_SIZE - 1 && front != 0) {
+        rear = 0;
+    } else {
+        rear++;
+    }
+    queue[rear] = element;
+}
+
+char deleteElement() {
+    if (front == -1) {
+        printf("Queue Underflow\n");
+        return '\0';
+    }
+    char deletedElement = queue[front];
+    if (front == rear) {
+        front = rear = -1;
+    } else if (front == MAX_SIZE - 1) {
+        front = 0;
+    } else {
+        front++;
+    }
+    return deletedElement;
+}
+
+void displayQueue() {
+    if (front == -1) {
+        printf("Queue is empty\n");
+        return;
+    }
+    int i = front;
+    printf("Circular Queue elements: ");
+    if (front <= rear) {
+        while (i <= rear) {
+            printf("%c ", queue[i]);
+            i++;
+        }
+    } else {
+        while (i < MAX_SIZE) {
+            printf("%c ", queue[i]);
+            i++;
+        }
+        i = 0;
+        while (i <= rear) {
+            printf("%c ", queue[i]);
+            i++;
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int choice;
+    char element;
+    
+    do {
+        printf("\nCircular Queue Operations:\n");
+        printf("1. Insert Element\n");
+        printf("2. Delete Element\n");
+        printf("3. Display Queue\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        
+        switch (choice) {
+            case 1:
+                printf("Enter element to insert: ");
+                scanf(" %c", &element);
+                insertElement(element);
+                break;
+            case 2:
+                printf("Deleted Element: %c\n", deleteElement());
+                break;
+            case 3:
+                displayQueue();
+                break;
+            case 4:
+                printf("Exiting...\n");
+                exit(0);
+            default:
+                printf("Invalid choice\n");
+        }
+    } while (1);
+    
+    return 0;
+}
+10.
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Btree
 {
-	struct Node *p;
-	p=getnode();
-	if(first==NULL)
-	first=last=p;
+	struct Btree *lchild;
+	int data;
+	struct Btree *rchild;
+};
+
+struct Btree *Insert(struct Btree *root,int  ele)
+{
+	struct Btree *temp,*prev=NULL,*cur;
+	temp=(struct Btree *)malloc(sizeof(struct Btree));
+	temp->data=ele;
+	temp->lchild=temp->rchild=NULL;
+	if(root==NULL)return(root=temp);
+	cur=root;
+	while(cur!=NULL)
+	{
+		prev=cur;
+		if(ele<cur->data)
+		cur=cur->lchild;
+		else
+		cur=cur->rchild;
+	}
+	if(ele<prev->data)
+	prev->lchild=temp;
 	else
-	{   	p->rlink=first;
-		first->llink=p;
-		first=p;
+	prev->rchild=temp;
+	return root;
+}
+void Inorder(struct Btree *ptr)
+{
+	if(ptr!=NULL)
+	{
+		Inorder(ptr->lchild);
+		printf("%d\t",ptr->data);
+		Inorder(ptr->rchild);
 	}
 }
-void InsertLast()
+void preorder(struct Btree *ptr)
 {
-	struct Node *p;
-	p=getnode();
-	if(first==NULL)
-	first=last=p;
-	else
+	if(ptr!=NULL)
 	{
-		last->rlink = p;
-		p->llink = last;
-		last =p;
+		printf("%d\t",ptr->data);
+		preorder(ptr->lchild);
+		preorder(ptr->rchild);
 	}
- }
-void DeleteFront()
-{
-	struct Node *p = first;
-	if(first ==NULL)
-	{
-	     printf("List is Empty...\n");
-	     return;
-	}
-	if(first == last) /*single node list*/
-	first =last = NULL;
-	else
-	{
-		first = first->rlink;
-		first->llink = NULL;
-	}
-	printf("Deleted Record is:\n");
-	printf("<%d\t%s\t%s\t%s\t%d\t%s>\n", p->ssn,p->name,p->dept,p->desig,p->sal,p->pno);
-	free(p);
 }
-void DeleteLast()
+void postorder(struct Btree *ptr)
 {
-	struct Node *p = last;
-	if(first ==NULL)
+	if(ptr!=NULL)
 	{
-	     printf("List is Empty...\n");
-	     return;
+		postorder(ptr->lchild);
+		postorder(ptr->rchild);
+		printf("%d\t",ptr->data);
 	}
-	if(first == last) /*single node list*/
-	first =last = NULL;
-	else
-	{
-	     last = last->llink;
-	     last->rlink = NULL;
-	}
-	printf("Deleted Record is:\n");
-	printf("<%d\t%s\t%s\t%s\t%d\t%s>\n", p->ssn,p->name,p->dept,p->desig,p->sal,p->pno);
-	free(p);
 }
-void DispForward()
-{   	struct Node *p;
-	int cnt = 0;
-	if(first==NULL)
-	{
-		printf("\nList is empty...\n");
-		return;
-	}
-	printf("\nStatus of List...\n");
-	for(p = first; p!=NULL; p=p->rlink,cnt++)
-	printf("<%d\t%s\t%s\t%s\t%d\t%s>\n", p->ssn,p->name,p->dept,p->desig,p->sal,p->pno);
-	printf("Total number of elements in List: %d\n", cnt);
-}
-void main()
+int search(struct Btree *root,int key)
 {
-	int ch;
+	struct Btree *cur=root;
+	while(cur!=NULL)
+	{
+		if(key==cur->data)
+		return 1;
+		if(key<cur->data)
+		cur=cur->lchild;
+		else
+		cur=cur->rchild;
+	}
+	return 0;
+}
+main()
+{
+	struct Btree *root=NULL;
+	int i,ch,n,key,flag,ele;
 	
 	while(1)
 	{
-		printf("\n1:InsertFront\n2:InsertLast\n3:DeleteFront\n4:DeleteLast\n5:Display\n6:Exit");
-		printf("\n\nEnter your choice:");
-		fflush(stdin);
+		printf("\n\n.....MENU...\n 1.Insert\n 2.Traversals\n 3.search BST\n 4.exit");
+		printf("\n Enter your choice:");
 		scanf("%d",&ch);
-		switch(ch)
+		switch (ch)
 		{
-			case 1:InsertFront(); break;
-			case 2:InsertLast();  break;
-			case 3:DeleteFront(); break;
-			case 4:DeleteLast();  break;
-			case 5:DispForward(); break;
-			case 6:exit(0);
+			case 1:printf("\n Enter the number of elements to be inserted....\n");
+			scanf("%d",&n);
+			printf("\n Enter the elements to be inserted....\n");
+			for(i=0;i<n;i++)
+			{
+			scanf("%d",&ele);
+			root=Insert(root,ele);
+			}
+			break;
+			case 2:printf("\n preorder sequence...\n");
+			preorder(root);
+			printf("\n Inorder sequence...\n");
+			Inorder(root);
+			printf("\n postorder sequence...\n");
+			postorder(root);
+			break;
+			case 3:printf("\n Enter key to be searched...\n");
+			scanf("%d", &key);
+			flag=search(root, key);
+			if(flag)
+			printf("\n key is found....\n");
+			else
+			printf("\n key is not found....\n");
+			break;
+			case 4:exit(0);
+			default: printf("\n wrong choice...try again\n");
 		}
 	}
+	
 }
-9.
+
+
+
+
+
